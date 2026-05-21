@@ -1,5 +1,5 @@
 const { Schema, model } = require('mongoose');
- 
+
 // This is the model you will be modifying
 const noteSchema = new Schema({
   title: {
@@ -15,8 +15,13 @@ const noteSchema = new Schema({
     type: Date,
     default: Date.now,
   },
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
 });
- 
+
 const Note = model('Note', noteSchema);
- 
+
 module.exports = Note;
