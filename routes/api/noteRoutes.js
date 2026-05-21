@@ -62,11 +62,21 @@ router.put('/:id', async (req, res) => {
 router.delete('/:id', async (req, res) => {
   try {
     // This needs an authorization check
-    const note = await Note.findByIdAndDelete(req.params.id);
+    const note = await Note.findById(req.params.id);
+
     if (!note) {
       return res.status(404).json({ message: 'No note found with this id!' });
     }
+
+    // AUTHORIZATION CHECK
+    if (note.user.toString() !== req.user._id.toString()) {
+      return res.status(403).json({ message: "User is not authorized to delete this note." });
+    }
+
+    await Note.findByIdAndDelete(req.params.id);
+
     res.json({ message: 'Note deleted!' });
+    
   } catch (err) {
     res.status(500).json(err);
   }
