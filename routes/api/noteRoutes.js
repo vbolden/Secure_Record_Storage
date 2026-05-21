@@ -24,6 +24,7 @@ router.post('/', async (req, res) => {
     const note = await Note.create({
       ...req.body,
       // The user ID needs to be added here
+      user: req.user._id,
     });
     res.status(201).json(note);
   } catch (err) {
